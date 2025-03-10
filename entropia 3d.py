@@ -3,7 +3,6 @@ import math
 import random
 import time
 
-# Configuración inicial
 ANCHO, ALTO = 800, 400
 FOV = math.pi / 3  # Campo de visión
 NUM_RAYOS = 120  # Número de rayos lanzados
@@ -19,7 +18,7 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))
 clock = pygame.time.Clock()
 fuente = pygame.font.Font(None, 74)
 
-# Mapa 2D (1 = pared, 0 = vacío)
+#(1 = pared, 0 = aire)
 mapa = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1],
@@ -30,38 +29,30 @@ mapa = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
-# Posición y ángulo del jugador
-jugador_x, jugador_y = 100, 100
+jugador_x, jugador_y = 100, 100 # Posición y ángulo del jugador
 angulo = math.pi / 4
 vivo = True
 
-# Lista de enemigos y proyectiles
-enemigos = []
+enemigos = [] # Lista de enemigos y proyectiles
 proyectiles_jugador = []
 proyectiles_enemigo = []
 
-# Tiempos de disparo de los enemigos
-ultimo_disparo_enemigos = {}
+ultimo_disparo_enemigos = {} # Tiempos de disparo de los enemigos
 
-# Tiempo inicial para controlar aparición de enemigos
-tiempo_inicio = time.time()
+tiempo_inicio = time.time() # Tiempo inicial para controlar aparición de enemigos
 
-# Generar enemigos en posiciones aleatorias del mapa
-def generar_enemigos(cantidad=3):
+def generar_enemigos(cantidad=3): # Generar enemigos en posiciones aleatorias del mapa
     for _ in range(cantidad):
         while True:
             x = random.randint(0, len(mapa[0]) - 1) * TAMANIO_BLOQUE + TAMANIO_BLOQUE // 2
             y = random.randint(0, len(mapa) - 1) * TAMANIO_BLOQUE + TAMANIO_BLOQUE // 2
             if mapa[y // TAMANIO_BLOQUE][x // TAMANIO_BLOQUE] == 0 and math.hypot(jugador_x - x, jugador_y - y) > 100:
                 enemigos.append([x, y])
-                # Asignar tiempo inicial para controlar disparos
-                ultimo_disparo_enemigos[(x, y)] = time.time()
+                ultimo_disparo_enemigos[(x, y)] = time.time()   # Asignar tiempo inicial para controlar disparos
                 break
 
-# Dibujar enemigos al estilo Wolfenstein 3D
-def dibujar_enemigos():
-    for enemigo in enemigos:
-        # Calcular distancia al jugador
+def dibujar_enemigos(): # Dibujar enemigos
+    for enemigo in enemigos:   # Calcular distancia al jugador
         distancia = math.hypot(jugador_x - enemigo[0], jugador_y - enemigo[1])
         if distancia < DIST_MAX and tiene_linea_vision(enemigo[0], enemigo[1], jugador_x, jugador_y):
             # Ajustar tamaño del enemigo según la distancia
@@ -210,7 +201,7 @@ def trazado_rayos():
                 )
                 break
 
-# Bucle principal del juego
+# Bucle prinvicila
 while vivo:
     # Generar enemigos después de 10 segundos
     if time.time() - tiempo_inicio > 10 and not enemigos:
@@ -222,17 +213,17 @@ while vivo:
             quit()
 
     pantalla.fill((0, 0, 0))  # Limpiar la pantalla
-    trazado_rayos()  # Dibujar el mapa con raycasting
-    dibujar_enemigos()  # Dibujar a los enemigos
-    mover_enemigos()  # Mover enemigos hacia el jugador
-    disparar_proyectiles()  # Gestionar disparos
-    mover_proyectiles()  # Mover proyectiles
-    mover_jugador()  # Mover al jugador
+    trazado_rayos()  
+    dibujar_enemigos()  
+    mover_enemigos() 
+    disparar_proyectiles() 
+    mover_proyectiles() 
+    mover_jugador()
 
-    pygame.display.flip()  # Actualizar la pantalla
-    clock.tick(60)  # Establecer la tasa de refresco a 60 FPS
+    pygame.display.flip() 
+    clock.tick(60)  
 
-# Mostrar pantalla de "Game Over"
+#Game Over
 pantalla.fill((0, 0, 0))
 texto = fuente.render("¡Has muerto!", True, (255, 0, 0))
 pantalla.blit(texto, (ANCHO // 2 - texto.get_width() // 2, ALTO // 2 - texto.get_height() // 2))
