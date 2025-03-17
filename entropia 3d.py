@@ -468,7 +468,7 @@ def main():
     global enemy_spawn_timer, player_lives, player_x, player_y, player_angle, show_map
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Laberinto 3D")
+    pygame.display.set_caption("ENTropia 3D")
     clock = pygame.time.Clock()
     
     font = pygame.font.SysFont("Arial", 20)
